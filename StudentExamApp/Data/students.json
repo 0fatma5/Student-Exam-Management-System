@@ -1,0 +1,51 @@
+[
+  {
+    "Level": "3rd Year",
+    "GPA": 3.73,
+    "Id": 1,
+    "Name": "Fatma",
+    "Email": "fatma@example.com"
+  },
+  {
+    "Level": "6",
+    "GPA": 6,
+    "Id": 4,
+    "Name": "ftama",
+    "Email": "fgag@df"
+  },
+  {
+    "Level": "3",
+    "GPA": 2,
+    "Id": 2,
+    "Name": "s",
+    "Email": "fat"
+  },
+  {
+    "Level": "3",
+    "GPA": 3,
+    "Id": 3,
+    "Name": "yhs",
+    "Email": "jfj@g,aol.co"
+  },
+  {
+    "Level": "3",
+    "GPA": 2,
+    "Id": 44,
+    "Name": "gdg",
+    "Email": "ffga@gamil.com"
+  },
+  {
+    "Level": "6",
+    "GPA": 4,
+    "Id": 33,
+    "Name": "dd",
+    "Email": "fatmaahmed390@outlook.com"
+  },
+  {
+    "Level": "4",
+    "GPA": 4,
+    "Id": 22,
+    "Name": "ddd",
+    "Email": "ftamnajedm390@outlook.com"
+  }
+]

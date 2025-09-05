@@ -1,0 +1,14 @@
+C:\Users\ahmed\Desktop\StudentExamApp\bin\Debug\net8.0\StudentExamApp.exe
+C:\Users\ahmed\Desktop\StudentExamApp\bin\Debug\net8.0\StudentExamApp.deps.json
+C:\Users\ahmed\Desktop\StudentExamApp\bin\Debug\net8.0\StudentExamApp.runtimeconfig.json
+C:\Users\ahmed\Desktop\StudentExamApp\bin\Debug\net8.0\StudentExamApp.dll
+C:\Users\ahmed\Desktop\StudentExamApp\bin\Debug\net8.0\StudentExamApp.pdb
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\StudentExamApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\StudentExamApp.AssemblyInfoInputs.cache
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\StudentExamApp.AssemblyInfo.cs
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\StudentExamApp.csproj.CoreCompileInputs.cache
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\StudentExamApp.dll
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\refint\StudentExamApp.dll
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\StudentExamApp.pdb
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\StudentExamApp.genruntimeconfig.cache
+C:\Users\ahmed\Desktop\StudentExamApp\obj\Debug\net8.0\ref\StudentExamApp.dll
