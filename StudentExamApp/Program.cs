@@ -149,7 +149,7 @@ class Program
         while (true)
         {
             Console.Write("ID: ");
-            if (!int.TryParse(Console.ReadLine(), out id))
+            if (!int.TryParse(Console.ReadLine(), out id) || id <= 0)
             {
                 Console.WriteLine("ID must be a number.");
                 continue;
@@ -221,7 +221,7 @@ class Program
     while (true)
     {
         Console.Write("Exam ID: ");
-        if (!int.TryParse(Console.ReadLine(), out id))
+        if (!int.TryParse(Console.ReadLine(), out id) || id <= 0)
         {
             Console.WriteLine("ID must be a number.");
             continue;
@@ -262,7 +262,7 @@ class Program
         while (true)
         {
             Console.Write("Result ID: ");
-            if (!int.TryParse(Console.ReadLine(), out id))
+            if (!int.TryParse(Console.ReadLine(), out id) || id <= 0)
             {
                 Console.WriteLine("ID must be a number.");
                 continue;
