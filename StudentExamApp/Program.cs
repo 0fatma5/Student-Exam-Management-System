@@ -2,6 +2,8 @@
 using StudentExamApp.Repositories;
 using System.Text.RegularExpressions;
 using StudentExamApp.Services;
+using StudentExamApp.Data;
+using System.Text;
 
 
 class Program
@@ -49,7 +51,7 @@ class Program
                 case "9": LoadAll(studentRepo, teacherRepo, examRepo, resultRepo); break;
                 case "10": ExportResultsToCsv(resultRepo, studentRepo, examRepo); break;
                 case "11": UpdateStudent(studentRepo); break;
-                case "12": DeleteStudent(studentRepo); break;
+                case "12": DeleteStudent(studentRepo, resultRepo); break;
                 case "13": return;
                 default: Console.WriteLine("Invalid choice"); break;
             }
@@ -72,7 +74,7 @@ class Program
         while (true)
         {
             Console.Write("ID: ");
-            if (!int.TryParse(Console.ReadLine(), out id))
+            if (!int.TryParse(Console.ReadLine(), out id) || id <= 0)
             {
                 Console.WriteLine("ID must be a number.");
                 continue;
@@ -147,7 +149,7 @@ class Program
         while (true)
         {
             Console.Write("ID: ");
-            if (!int.TryParse(Console.ReadLine(), out id))
+            if (!int.TryParse(Console.ReadLine(), out id) || id <= 0)
             {
                 Console.WriteLine("ID must be a number.");
                 continue;
@@ -219,7 +221,7 @@ class Program
     while (true)
     {
         Console.Write("Exam ID: ");
-        if (!int.TryParse(Console.ReadLine(), out id))
+        if (!int.TryParse(Console.ReadLine(), out id) || id <= 0)
         {
             Console.WriteLine("ID must be a number.");
             continue;
@@ -260,7 +262,7 @@ class Program
         while (true)
         {
             Console.Write("Result ID: ");
-            if (!int.TryParse(Console.ReadLine(), out id))
+            if (!int.TryParse(Console.ReadLine(), out id) || id <= 0)
             {
                 Console.WriteLine("ID must be a number.");
                 continue;
@@ -301,7 +303,7 @@ class Program
         while (true)
         {
             Console.Write("Score: ");
-            if (!double.TryParse(Console.ReadLine(), out score) || score < 0)
+            if (!double.TryParse(Console.ReadLine(), out score) || !double.IsFinite(score) || score < 0)
             {
                 Console.WriteLine("Invalid score.");
                 continue;
@@ -309,6 +311,11 @@ class Program
             break;
         }
 
+        if (resultRepo.GetAll().Any(r => r.StudentId == studentId && r.ExamId == examId))
+        {
+            Console.WriteLine("A result already exists for this student and exam.");
+            return;
+        }
         resultRepo.Add(new Result { Id = id, StudentId = studentId, ExamId = examId, Score = score });
         Console.WriteLine("Result added successfully!");
     }
@@ -332,21 +339,21 @@ class Program
     foreach (var r in results)
     {
         var exam = examRepo.GetById(r.ExamId);
-        Console.WriteLine($"{exam!.Subject} ({exam.Date:yyyy-MM-dd}): {r.Score}");
+        if (exam == null)
+        {
+            Console.WriteLine($"Result {r.Id}: exam {r.ExamId} was not found.");
+            continue;
+        }
+        Console.WriteLine($"{exam.Subject} ({exam.Date:yyyy-MM-dd}): {r.Score}");
     }
 }
     static void ExportResultsToCsv(ResultRepository resultRepo, StudentRepository studentRepo, ExamRepository examRepo)
     {
-        var path = Path.Combine("Data", "results.csv");
-        using var writer = new StreamWriter(path);
-        writer.WriteLine("StudentName,Exam,Score");
-        foreach (var r in resultRepo.GetAll())
-        {
-            var student = studentRepo.GetById(r.StudentId);
-            var exam = examRepo.GetById(r.ExamId);
-            if (student != null && exam != null)
-                writer.WriteLine($"{student.Name},{exam.Subject},{r.Score}");
-        }
+        var path = DataPaths.FilePath("results.csv");
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        var csv = CsvReportService.BuildResults(
+            resultRepo.GetAll(), studentRepo.GetAll(), examRepo.GetAll());
+        File.WriteAllText(path, csv, new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
         Console.WriteLine($"Results exported to {path}");
     }
     static void ShowSearchSortStudents(StudentRepository repo)
@@ -440,12 +447,18 @@ class Program
         Console.WriteLine("Student updated successfully!");
     }
 
-    static void DeleteStudent(StudentRepository repo)
+    static void DeleteStudent(StudentRepository repo, ResultRepository resultRepo)
     {
         Console.Write("Enter Student ID to delete: ");
         if (!int.TryParse(Console.ReadLine(), out int id))
         {
             Console.WriteLine("Invalid ID.");
+            return;
+        }
+
+        if (resultRepo.GetAll().Any(result => result.StudentId == id))
+        {
+            Console.WriteLine("Cannot delete a student with recorded results. Remove the results first.");
             return;
         }
 

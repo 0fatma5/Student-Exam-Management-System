@@ -1,0 +1,16 @@
+# Build artifacts (some older artifacts are already tracked; this affects new ones only)
+**/bin/
+**/obj/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Temporary data/export artifacts
+*.tmp
+**/Data/results.csv
+
+# Local configuration
+.env
+.env.*
+!.env.example
