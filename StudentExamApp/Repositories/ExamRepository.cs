@@ -1,15 +1,19 @@
 using StudentExamApp.Models;
-using System.Text.Json;
+using StudentExamApp.Data;
 
 namespace StudentExamApp.Repositories;
 
 public class ExamRepository : IRepository<Exam>
 {
-    private readonly string _path = Path.Combine("Data", "exams.json");
+    private readonly string _path;
     private List<Exam> _exams = new();
     private Dictionary<int, Exam> _byId = new();
 
-    public ExamRepository() => Load();
+    public ExamRepository(string? dataDirectory = null)
+    {
+        _path = DataPaths.FilePath("exams.json", dataDirectory);
+        Load();
+    }
 
     public void Add(Exam e)
     {
@@ -39,19 +43,15 @@ public class ExamRepository : IRepository<Exam>
     public Exam? GetById(int id) => _byId.TryGetValue(id, out var e) ? e : null;
     public IEnumerable<Exam> GetAll() => _exams;
 
-    public void Save()
-    {
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(_path, JsonSerializer.Serialize(_exams, options));
-    }
+    public void Save() => JsonStorage.Save(_path, _exams);
 
     public void Load()
     {
-        if (File.Exists(_path))
-        {
-            var json = File.ReadAllText(_path);
-            _exams = JsonSerializer.Deserialize<List<Exam>>(json) ?? new();
-        }
-        _byId = _exams.ToDictionary(e => e.Id);
+        var loaded = JsonStorage.Load<Exam>(_path);
+        if (loaded.Any(item => item.Id <= 0) || loaded.Select(item => item.Id).Distinct().Count() != loaded.Count)
+            throw new InvalidDataException("Invalid or duplicate exams IDs in " + _path);
+        _exams = loaded;
+        _byId = _exams.ToDictionary(item => item.Id);
     }
+
 }
