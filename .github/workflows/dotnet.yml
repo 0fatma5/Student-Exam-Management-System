@@ -1,0 +1,27 @@
+name: .NET Build and Tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore app
+        run: dotnet restore StudentExamApp/StudentExamApp.csproj
+      - name: Build app
+        run: dotnet build StudentExamApp/StudentExamApp.csproj -c Release --no-restore
+      - name: Run unit tests
+        run: dotnet test StudentExamApp.Tests/StudentExamApp.Tests.csproj -c Release --verbosity normal
